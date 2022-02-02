@@ -41,13 +41,14 @@
 .question button{
    margin-left: 10px;
    width: 200px;
+   border-radius: 10px;
 
 }
 
 .disclaimer {
     font-size: 13px;
     opacity: 0.3;
-    margin-top: 100px;
+    margin-top: 60px;
 }
 
 .qiuezWindow {
@@ -56,15 +57,28 @@
 
 .totalTrue {
     color: rgb(47, 233, 47);
-    font-size: 24px;
+    font-size: 20px;
 }
 
 .totalFalse {
     color: red;
-    font-size: 24px;
+    font-size: 20px;
+ 
 }
 
 .qiuezWindow h3 { 
 
 padding: 20px
+}
+
+.qiuezWindow button {
+    border-radius: 10px;
+    width: 200px;
+}
+
+
+.questionNumber { 
+   color: rgb(0, 149, 248);
+   margin-bottom: 10px;
+  font-size: 16px;
 }

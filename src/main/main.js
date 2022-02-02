@@ -3,14 +3,23 @@ import "./main.css";
 import "animate.css";
 import Spinner from "../spinner/spiner";
 
-const Main = ({ countTrue, countFalse, falseAnswer,trueAnswer }) => {
+const Main = ({
+  countTrue,
+  countFalse,
+  falseAnswer,
+  trueAnswer,
+  resetCount,
+  nameUser,
+}) => {
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [data, setData] = useState([]);
   const [start, setStart] = useState(true);
   const [idQuestion, setIdQuestion] = useState(0);
   const [endQuest, setEndQuest] = useState(false);
+  const [classButton, setClassButton] = useState("btn btn-info");
 
+  //Cтартовое Окно
   const StartWindow = () => {
     return (
       <div className="startWindow">
@@ -24,7 +33,7 @@ const Main = ({ countTrue, countFalse, falseAnswer,trueAnswer }) => {
       </div>
     );
   };
-
+  //Запрос на сервер
   useEffect(() => {
     async function fetchMyApi() {
       await fetch(
@@ -46,21 +55,19 @@ const Main = ({ countTrue, countFalse, falseAnswer,trueAnswer }) => {
   }, []);
 
   const { results } = data;
-  console.log(results);
-  console.log(countTrue);
 
   //Проверка ответа
   function checkAnswer(answer) {
-    if (answer.id === 10) {
+    console.log(answer.isTrue);
+    if (answer.isTrue) {
       setIdQuestion(idQuestion + 1);
       countTrue();
     }
-
     if (idQuestion === 8) {
       setEndQuest(true);
-    } 
+    }
 
-    else {
+    if (!answer.isTrue) {
       setIdQuestion(idQuestion + 1);
       countFalse();
     }
@@ -78,13 +85,14 @@ const Main = ({ countTrue, countFalse, falseAnswer,trueAnswer }) => {
 
     var xid = 0;
 
-    let trueanswer = { Answer: correct_answer, id: 10 };
+    let trueanswer = { Answer: correct_answer, id: 10, isTrue: true };
     let arrayQuestions = incorrect_answers.map((x) => {
       xid++;
-      return { Answer: x, id: xid };
+      return { Answer: x, id: xid, isTrue: false };
     });
 
     arrayQuestions.splice(Math.random() * (3 - 0 + 1) + 0, 0, trueanswer);
+    console.log(arrayQuestions);
 
     var questionModify = question.replace(/&quot;/g, "").replace(/&#039/g, "");
 
@@ -94,7 +102,7 @@ const Main = ({ countTrue, countFalse, falseAnswer,trueAnswer }) => {
           type="button"
           key={answer.id}
           onClick={() => checkAnswer(answer)}
-          className="btn btn-light"
+          className={classButton}
         >
           {answer.Answer}
         </button>
@@ -103,6 +111,9 @@ const Main = ({ countTrue, countFalse, falseAnswer,trueAnswer }) => {
 
     return (
       <div className="text-center question animate__animated  animate__fadeIn">
+        <div className="text-right questionNumber">
+          {"#  " + (idQuestion + 1)}
+        </div>
         <p> {"Категория : " + category}</p>
         <p> {"Сложность : " + difficulty}</p>
         <p> {"Вопрос: " + questionModify}</p>
@@ -111,24 +122,34 @@ const Main = ({ countTrue, countFalse, falseAnswer,trueAnswer }) => {
     );
   };
 
-  console.log(falseAnswer);
-  console.log(trueAnswer);
-//Конечное окно
-  const EndWindow = ({falseAnswer,trueAnswer}) => {
+  //Конечное окно
+  const EndWindow = ({ falseAnswer, trueAnswer, nameUser }) => {
+    let resultOftest =
+      trueAnswer > 5
+        ? "Поздравляю  " + nameUser + ", вы прошли Викторину!"
+        : "Упс! " +
+          nameUser +
+          " , похоже вы не набрали достаточное количество правильных ответ, попробуйте снова!";
 
-    const {
-      category,
-      difficulty,
-    } = results[idQuestion];
-
-    return <div className="qiuezWindow  endWindow text-center animate__animated animate__fadeIn"><h3>Поздравляю вы завершили Викторину!</h3>
-            <p> {"Категория : " + category}</p>
-            <p> {"Сложность : " + difficulty}</p>
-            <p>Правильные ответы </p><p className="totalTrue"> {trueAnswer} </p>
-            <p>Неправильные ответы </p><p className="totalFalse"> {falseAnswer} </p>
-
-    </div>;
+    return (
+      <div className="qiuezWindow  endWindow text-center animate__animated animate__fadeIn">
+        <h3>{resultOftest}</h3>
+        <p>Правильные ответы </p>
+        <p className="totalTrue"> {trueAnswer} </p>
+        <p>Неправильные ответы </p>
+        <p className="totalFalse"> {falseAnswer} </p>
+        <button className="btn btn-success" onClick={() => startAgain()}>
+          Пройти еще раз
+        </button>
+      </div>
+    );
   };
+  //Запустить тест заново
+  function startAgain() {
+    setIdQuestion(0);
+    setEndQuest(false);
+    resetCount();
+  }
 
   //Логика отображения
   if (error) {
@@ -150,7 +171,13 @@ const Main = ({ countTrue, countFalse, falseAnswer,trueAnswer }) => {
     return <StartWindow />;
   }
   if (endQuest === true) {
-    return <EndWindow falseAnswer={falseAnswer} trueAnswer={trueAnswer} />;
+    return (
+      <EndWindow
+        falseAnswer={falseAnswer}
+        trueAnswer={trueAnswer}
+        nameUser={nameUser}
+      />
+    );
   } else {
     return (
       <div className="qiuezWindow">

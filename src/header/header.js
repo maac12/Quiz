@@ -34,7 +34,7 @@ export default class Header extends Component {
             <ul className="navbar-nav me-auto">
             <li className="nav-item">
                 <a className="nav-link">
-                 Добро пожаловать {this.props.login}!
+                 Добро пожаловать {this.props.nameUser}!
                 </a>
               </li>
               <li className="nav-item">
