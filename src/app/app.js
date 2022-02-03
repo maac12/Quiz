@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import Header from "../header/header";
 import Autoriz from "../autoriz/autoriz";
-import Spinner from "../spinner/spiner";
 import Main from "../main/main";
 
 export default class App extends Component {
@@ -11,8 +10,8 @@ export default class App extends Component {
     login: false,
     trueAnswer: 0,
     falseAnswer: 0,
+    trying: 0,
   };
-
 
   _startLoading = (timeout) => {
     this.start = setTimeout(() => {
@@ -38,25 +37,34 @@ export default class App extends Component {
   };
 
   resetCount = () => {
-    this.setState({ trueAnswer : 0, falseAnswer : 0});
-  }
+    this.setState({ trueAnswer: 0, falseAnswer: 0 });
+  };
+
+  countingTrying = () => {
+    this.setState({ trying: this.state.trying + 1 });
+  };
 
   render() {
-    console.log(this.state);
     const { login } = this.state;
 
     if (login === true) {
       return (
         <div>
-          <Header nameUser={this.state.nameUser} />
+          <Header
+            nameUser={this.state.nameUser}
+            falseAnswer={this.state.falseAnswer}
+            trueAnswer={this.state.trueAnswer}
+            trying={this.state.trying}
+          />
           <Main
             label="123"
             countTrue={this.countTrue}
             countFalse={this.countFalse}
-            trueAnswer = {this.state.trueAnswer}
-            falseAnswer = {this.state.falseAnswer}
-            nameUser = {this.state.nameUser}
-            resetCount = {this.resetCount}
+            trueAnswer={this.state.trueAnswer}
+            falseAnswer={this.state.falseAnswer}
+            nameUser={this.state.nameUser}
+            resetCount={this.resetCount}
+            countingTrying={this.countingTrying}
           />
         </div>
       );

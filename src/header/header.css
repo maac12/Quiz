@@ -1,3 +1,24 @@
-.headLogo { 
+.headLogo {
     font-size: 24px;
+}
+
+.navbar li {
+    cursor: pointer;
+
+}
+
+
+.counter {
+    font-size: 16px;
+    margin-left: 1100px;
+
+}
+
+.falseCount {
+    color: rgb(155, 18, 18);
+    margin-left: 10px;
+}
+
+.trueCount {
+    color: rgb(18, 158, 37);
 }

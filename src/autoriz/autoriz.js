@@ -5,7 +5,7 @@ export default class Autoriz extends Component {
   state = {
     loginValue: "",
     passwordValue: "",
-    classError: "form-control borderRadius"
+    classError: "form-control borderRadius",
   };
 
   onLoginChange = (e) => {
@@ -19,19 +19,23 @@ export default class Autoriz extends Component {
     this.setState({
       passwordValue: e.target.value,
     });
-  
   };
 
   onSubmit = (e) => {
     e.preventDefault();
-    if (this.state.loginValue === "" || null || this.state.passwordValue === "" || null) {
+    if (
+      this.state.loginValue === "" ||
+      null ||
+      this.state.passwordValue === "" ||
+      null
+    ) {
       return this.setState({
-        classError: "form-control borderRadius error"
+        classError: "form-control borderRadius error",
       });
-    }  else {
+    } else {
       this.props.getIn(this.state.loginValue, this.state.passwordValue);
       return this.setState({
-        classError: "form-control borderRadius"
+        classError: "form-control borderRadius",
       });
     }
   };
@@ -48,7 +52,7 @@ export default class Autoriz extends Component {
             <label className="col-form-label mt-4">Псевдоним </label>{" "}
             <input
               type="text"
-              className= {this.state.classError}
+              className={this.state.classError}
               onChange={this.onLoginChange}
               placeholder="Какой нибудь псевдоним"
               id="1"
@@ -56,7 +60,7 @@ export default class Autoriz extends Component {
             <label className="col-form-label mt-4">Пароль </label>{" "}
             <input
               type="password"
-              className= {this.state.classError}
+              className={this.state.classError}
               onChange={this.onPasswordChange}
               placeholder="Пароль для авторизации"
               id="2"

@@ -10,6 +10,7 @@ const Main = ({
   trueAnswer,
   resetCount,
   nameUser,
+  countingTrying,
 }) => {
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -58,13 +59,13 @@ const Main = ({
 
   //Проверка ответа
   function checkAnswer(answer) {
-    console.log(answer.isTrue);
     if (answer.isTrue) {
       setIdQuestion(idQuestion + 1);
       countTrue();
     }
     if (idQuestion === 8) {
       setEndQuest(true);
+      countingTrying();
     }
 
     if (!answer.isTrue) {
@@ -92,7 +93,6 @@ const Main = ({
     });
 
     arrayQuestions.splice(Math.random() * (3 - 0 + 1) + 0, 0, trueanswer);
-    console.log(arrayQuestions);
 
     var questionModify = question.replace(/&quot;/g, "").replace(/&#039/g, "");
 
